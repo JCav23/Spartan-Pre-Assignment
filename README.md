@@ -1,4 +1,4 @@
-# Pre-Assignment :globe_with_miridians:
+# Pre-Assignment :globe_with_meridians:
 
 #### Introduction :page_with_curl:
 
