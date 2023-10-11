@@ -81,5 +81,3 @@ Enhance query from Exercize 3 by adding a derived column called:
 * Thus far, Window Functions have been utilized as a more advanced alternative to aggregate Queries.
 * However, they also give something entirely new: the ability to rank records within the data.
 * These rankings can either be applied across the entire query output, or to partitioned groups within it
-
-
