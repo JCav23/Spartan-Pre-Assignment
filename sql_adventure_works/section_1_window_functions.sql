@@ -31,3 +31,57 @@ FROM [AdventureWorks2019].[Sales].[SalesPerson]
 
 SELECT MAX([SalesYTD])
 FROM [AdventureWorks2019].[Sales].[SalesPerson]
+
+-- Sum of line totals, grouped by ProductID AND OrderQty, in an aggregate query
+
+SELECT
+ProductID,
+OrderQty,
+LineTotal = SUM(LineTotal)
+FROM AdventureWorks2019.Sales.SalesOrderDetail
+GROUP BY
+ProductID,
+OrderQty
+ORDER BY 1, 2 DESC;
+
+-- Sum of Line Totals via OVER
+
+SELECT
+ProductID,
+SalesOrderID,
+SalesOrderDetailID,
+OrderQty,
+UnitPrice,
+UnitPriceDiscount,
+LineTotal,
+ProductID_LineTotal = SUM(LineTotal)OVER(PARTITION BY ProductID, OrderQty)
+FROM AdventureWorks2019.Sales.SalesOrderDetail
+ORDER BY ProductID, OrderQty DESC
+
+-- Sum of Line Totals by Sales Order ID
+
+-- Via Window Function
+SELECT 
+SalesOrderID,
+SalesOrderDetailID,
+LineTotal,
+SalesOrderID_LineTotal = Sum(LineTotal) OVER(PARTITION BY SalesOrderID)
+FROM AdventureWorks2019.Sales.SalesOrderDetail
+ORDER BY SalesOrderID
+
+-- Via Aggregate Query
+SELECT
+SalesOrderID,
+LineTotal = SUM(LineTotal)
+FROM AdventureWorks2019.Sales.SalesOrderDetail
+ORDER BY SalesOrderID
+
+-- Ranking all records within each group of Sales Order IDs
+SELECT 
+SalesOrderID,
+SalesOrderDetailID,
+LineTotal,
+ProductID_LineTotal = SUM(LineTotal) OVER(PARTITION BY SalesOrderID),
+Ranking = ROW_NUMBER() OVER(ORDER BY LineTotal DESC)
+FROM AdventureWorks2019.Sales.SalesOrderDetail
+ORDER BY 5
