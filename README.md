@@ -35,7 +35,7 @@ Create a query with the following columns:
 * Rate, from the HumanResources.EmployeePayHistory table
 * A derived column called "AverageRate" that returns the average of all values in the "Rate" column, in each row
 
-#### Exercisze 2
+#### Exercize 2
 Enhance query from Exercize 1 by adding a derived column called:
 "MaximumRate" that returns the largest of all values in the "Rate" column in each row.
 
@@ -44,7 +44,7 @@ Enhance query from Exercize 2 by adding a derived column called:
 "DiffFromAvgRate" that returns the results of the following calculations:
 * An employee's pay rate, MINUS the average of all values in the "Rate" column.
 
-#### Exercize 4 
+#### Exercize 4
 Enhance query from Exercise 3 by adding a derived column called:
 "PercentofMaxRate" that returns the result of the following calculation:
 * An employees's pay rate, DIVIDED BY the maximum of all values in the "Rate" column, times 100.
@@ -81,3 +81,37 @@ Enhance query from Exercize 3 by adding a derived column called:
 * Thus far, Window Functions have been utilized as a more advanced alternative to aggregate Queries.
 * However, they also give something entirely new: the ability to rank records within the data.
 * These rankings can either be applied across the entire query output, or to partitioned groups within it
+
+#### Exercize 1
+Create a query with the following columns:
+* "Name" from the Production.Product Table which can be aliased as "Product Name"
+* "ListPrice" from the Production.Product Table
+* "Name" from the Production.ProductSubcategory Table which can be aliased as "ProductSubcategory"
+* "Name" from the Production.ProductSubcategory Table which can be aliased as "ProductCategory"
+
+#### Exercize 2
+Enhance your query from Exercize 1 by adding a derived column called:
+* "Price Rank" that ranks all records in the dataset by ListPrice, in descending order. That is to say the product with the most expensive price should have a rank of 1, and the product with the least expensive price should have a rank equal to the number of records in the dataset
+
+#### Exercize 3
+Enhance your query from Exercize 2 by adding a derived column called:
+* "CategoryPriceRank" that ranks all products by ListPrice __within each category__ in descending order.
+
+#### Exercize 4
+Enhance your query from Exercize 3 by addind a derived column called:
+* "Top 5 Price In Category" that returns the string "Yes" if a product has one of the top 5 list prices in its product category, and "No" if it does not.
+
+### RANK / DENSE_RANK
+
+* If you are trying to pick exactly one record from each partition group - either the first or the last - use ROW_NUMBER.
+* This is probably the most common scenario
+* RANK and DENSE_RANK are helpful in rarer, more specialized cases.
+* It ultimately depends on whate you're trying to get out of your data. 
+
+#### Exercize 1 
+Using the query from ROW_NUMBER Exercize 4, add a derived column called:
+* "Category Price Rank With Rank" that uses the RANK function to rank all products by ListPrice __within each category__ in descending order. 
+
+#### Exercize 2
+Modify the query from Exercize 1 by adding a derived column called:
+* "Category Price Rank With Dense Rank" that uses the DENSE_RANK function to rank all products by ListPrice __within each category__ 

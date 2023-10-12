@@ -85,3 +85,15 @@ ProductID_LineTotal = SUM(LineTotal) OVER(PARTITION BY SalesOrderID),
 Ranking = ROW_NUMBER() OVER(ORDER BY LineTotal DESC)
 FROM AdventureWorks2019.Sales.SalesOrderDetail
 ORDER BY 5
+
+-- Ranking ALL records by line total - no groups! 
+
+SELECT 
+SalesOrderID,
+SalesOrderDetailID,
+LineTotal,
+"Ranking" = ROW_NUMBER()OVER(PARTITION BY SalesOrderID ORDER BY LineTotal DESC),
+"RankingWithRank" = RANK()OVER(PARTITION BY SalesOrderID ORDER BY LineTotal DESC),
+"RankingWithDense_Rank" = DENSE_RANK() OVER(PARTITION BY SalesOrderID ORDER BY LineTotal DESC)
+FROM AdventureWorks2019.Sales.SalesOrderDetail
+ORDER BY SalesOrderID, LineTotal DESC

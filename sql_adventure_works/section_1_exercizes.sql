@@ -103,3 +103,78 @@ JOIN AdventureWorks2019.Production.ProductSubcategory AS PS
 ON P.ProductSubcategoryID = PS.ProductSubcategoryID
 JOIN AdventureWorks2019.Production.ProductCategory AS PC
 ON PS.ProductCategoryID = PC.ProductCategoryID
+
+-- ROW_NUMBER
+-- Exercize 1
+SELECT P.Name AS "ProductName",
+P.ListPrice,
+PS.Name AS "ProductSubcategory",
+PC.Name AS "ProductCategory"
+FROM AdventureWorks2019.Production.Product AS P
+JOIN AdventureWorks2019.Production.ProductSubcategory AS PS
+ON P.ProductSubcategoryID = PS.ProductSubcategoryID
+JOIN AdventureWorks2019.Production.ProductCategory AS PC
+ON PS.ProductCategoryID = PC.ProductCategoryID
+
+-- Exercize 2
+SELECT P.Name AS "ProductName",
+P.ListPrice,
+PS.Name AS "ProductSubcategory",
+PC.Name AS "ProductCategory",
+"Price Rank" = ROW_NUMBER() OVER(ORDER BY P.ListPrice DESC)
+FROM AdventureWorks2019.Production.Product AS P
+JOIN AdventureWorks2019.Production.ProductSubcategory AS PS
+ON P.ProductSubcategoryID = PS.ProductSubcategoryID
+JOIN AdventureWorks2019.Production.ProductCategory AS PC
+ON PS.ProductCategoryID = PC.ProductCategoryID
+
+-- Exercize 3
+SELECT P.Name AS "ProductName",
+P.ListPrice,
+PS.Name AS "ProductSubcategory",
+PC.Name AS "ProductCategory",
+"Price Rank" = ROW_NUMBER() OVER(ORDER BY P.ListPrice DESC),
+"Category Price Rank" = ROW_NUMBER() OVER(PARTITION BY PC.Name ORDER BY P.ListPrice DESC)
+FROM AdventureWorks2019.Production.Product AS P
+JOIN AdventureWorks2019.Production.ProductSubcategory AS PS
+ON P.ProductSubcategoryID = PS.ProductSubcategoryID
+JOIN AdventureWorks2019.Production.ProductCategory AS PC
+ON PS.ProductCategoryID = PC.ProductCategoryID
+
+-- Exercize 4
+SELECT P.Name AS "ProductName",
+P.ListPrice,
+PS.Name AS "ProductSubcategory",
+PC.Name AS "ProductCategory",
+"Price Rank" = ROW_NUMBER() OVER(ORDER BY P.ListPrice DESC),
+"Category Price Rank" = ROW_NUMBER() OVER(PARTITION BY PC.Name ORDER BY P.ListPrice DESC),
+"Top 5 Price In Category" = 
+CASE
+  WHEN ROW_NUMBER() OVER(PARTITION BY PC.Name ORDER BY P.ListPrice DESC) <= 5 THEN 'Yes'
+  ELSE 'No'
+END 
+FROM AdventureWorks2019.Production.Product AS P
+JOIN AdventureWorks2019.Production.ProductSubcategory AS PS
+ON P.ProductSubcategoryID = PS.ProductSubcategoryID
+JOIN AdventureWorks2019.Production.ProductCategory AS PC
+ON PS.ProductCategoryID = PC.ProductCategoryID
+
+-- RANK / DENSE_RANK
+-- Exercize 1
+SELECT P.Name AS "ProductName",
+P.ListPrice,
+PS.Name AS "ProductSubcategory",
+PC.Name AS "ProductCategory",
+"Price Rank" = ROW_NUMBER() OVER(ORDER BY P.ListPrice DESC),
+"Category Price Rank" = ROW_NUMBER() OVER(PARTITION BY PC.Name ORDER BY P.ListPrice DESC),
+"Category Price Rank With Rank" = RANK() OVER(PARTITION BY PC.Name ORDER BY P.ListPrice DESC),
+"Top 5 Price In Category" = 
+CASE
+  WHEN ROW_NUMBER() OVER(PARTITION BY PC.Name ORDER BY P.ListPrice DESC) <= 5 THEN 'Yes'
+  ELSE 'No'
+END 
+FROM AdventureWorks2019.Production.Product AS P
+JOIN AdventureWorks2019.Production.ProductSubcategory AS PS
+ON P.ProductSubcategoryID = PS.ProductSubcategoryID
+JOIN AdventureWorks2019.Production.ProductCategory AS PC
+ON PS.ProductCategoryID = PC.ProductCategoryID
